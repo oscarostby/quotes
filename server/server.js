@@ -11,18 +11,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const connectionString = 'mongodb+srv://admin:admin@exampremcluster.sbjc7bi.mongodb.net/?retryWrites=true&w=majority';
-
-mongoose.connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
-
 db.on('error', (error) => {
   console.error('Failed to connect to MongoDB:', error);
 });
-
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
@@ -36,30 +30,20 @@ const User = mongoose.model('User', userSchema);
 
 app.post('/register', async (req, res) => {
   const { username, password, confirmPassword } = req.body;
-
   if (!username || !password || !confirmPassword) {
     return res.status(400).json({ error: 'All fields are required' });
   }
-
   if (password !== confirmPassword) {
     return res.status(400).json({ error: 'Passwords do not match' });
   }
-
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ error: 'Username already taken' });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      username,
-      password: hashedPassword,
-    });
-
+    const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
-
     res.status(200).json({ message: 'User registered successfully' });
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while processing your request' });
@@ -68,21 +52,38 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ error: 'Username not found' });
     }
-
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return res.status(400).json({ error: 'Incorrect password' });
     }
-
     res.status(200).json({ message: 'User logged in successfully' });
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while processing your request' });
+  }
+});
+
+const messageSchema = new mongoose.Schema({
+  message: { type: String, required: true },
+  author: { type: String, required: true },
+});
+
+const Message = mongoose.model('Message', messageSchema);
+
+app.post('/send-message', async (req, res) => {
+  const { message, author } = req.body;
+  try {
+    const newMessage = new Message({ message, author });
+    await newMessage.save();
+    console.log('Message successfully saved');
+    res.status(200).json({ message: 'Message successfully sent' });
+  } catch (error) {
+    console.error('Error saving message:', error);
+    res.status(500).json({ error: 'An error occurred while saving the message' });
   }
 });
 
