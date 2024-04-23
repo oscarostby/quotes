@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import bgImage from './bglog.jpg';
 import bgslid from './bgslid.jpg';
+import Header from '../compoments/header'; // Adjust the path if necessary
 
 const slideAnimation = keyframes`
   from {
@@ -176,6 +177,12 @@ const Feedback = styled.div`
   font-size: 0.9rem;
 `;
 
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
 const App = () => {
   const [activeSlide, setActiveSlide] = useState('register');
   const [registerData, setRegisterData] = useState({ username: '', password: '', confirmPassword: '' });
@@ -240,89 +247,92 @@ const App = () => {
       }
     } catch (error){
       if (error.response && error.response.data && error.response.data.error) {
-      setFeedback(error.response.data.error);
+        setFeedback(error.response.data.error);
       } else {
-      setFeedback('An error occurred while processing your request');
+        setFeedback('An error occurred while processing your request');
       }
-      }
-      };
-      
-      const handleRegisterInputChange = (e) => {
-      const { name, value } = e.target;
-      setRegisterData({ ...registerData, [name]: value });
-      };
-      
-      const handleLoginInputChange = (e) => {
-      const { name, value } = e.target;
-      setLoginData({ ...loginData, [name]: value });
-      };
-      
-      return (
+    }
+  };
+
+  const handleRegisterInputChange = (e) => {
+    const { name, value } = e.target;
+    setRegisterData({ ...registerData, [name]: value });
+  };
+
+  const handleLoginInputChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+
+  return (
+    <AppContainer>
+      <Header />
       <Container>
-      <Commode>
-      <LeftSlide active={activeSlide === 'register'}>
-      <BlurredBackground />
-      <Content>
-      <Form onSubmit={handleRegisterSubmit}>
-      <Input
-                   type="text"
-                   name="username"
-                   placeholder="Username"
-                   value={registerData.username}
-                   onChange={handleRegisterInputChange}
-                 />
-      <Input
-                   type="password"
-                   name="password"
-                   placeholder="Password"
-                   value={registerData.password}
-                   onChange={handleRegisterInputChange}
-                 />
-      <Input
-                   type="password"
-                   name="confirmPassword"
-                   placeholder="Confirm Password"
-                   value={registerData.confirmPassword}
-                   onChange={handleRegisterInputChange}
-                 />
-      <Button type="submit">Register</Button>
-      {feedback && <Feedback>{feedback}</Feedback>}
-      </Form>
-      </Content>
-      </LeftSlide>
-      <RightSlide active={activeSlide === 'login'}>
-      <BlurredBackground />
-      <Content>
-      <Form onSubmit={handleLoginSubmit}>
-      <Input
-                   type="text"
-                   name="username"
-                   placeholder="Username"
-                   value={loginData.username}
-                   onChange={handleLoginInputChange}
-                 />
-      <Input
-                   type="password"
-                   name="password"
-                   placeholder="Password"
-                   value={loginData.password}
-                   onChange={handleLoginInputChange}
-                 />
-      <Button type="submit">Login</Button>
-      {feedback && <Feedback>{feedback}</Feedback>}
-      </Form>
-      </Content>
-      </RightSlide>
-      <CoverContainer active={activeSlide === 'register'}>
-      <MainText>{activeSlide === 'register' ? 'Login' : 'Register'} to start chatting on</MainText>
-      <MainText>Bitter</MainText>
-      <SmallTextRight>Your all-in-one chatting platform</SmallTextRight>
-      </CoverContainer>
-      <LeftDoorButton onClick={toggleSlide}>Have an account?</LeftDoorButton>
-      <RightDoorButton onClick={toggleSlide}>Don't have an account?</RightDoorButton>
-      </Commode>
+        <Commode>
+          <LeftSlide active={activeSlide === 'register'}>
+            <BlurredBackground />
+            <Content>
+              <Form onSubmit={handleRegisterSubmit}>
+                <Input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  value={registerData.username}
+                  onChange={handleRegisterInputChange}
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={registerData.password}
+                  onChange={handleRegisterInputChange}
+                />
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={registerData.confirmPassword}
+                  onChange={handleRegisterInputChange}
+                />
+                <Button type="submit">Register</Button>
+                {feedback && <Feedback>{feedback}</Feedback>}
+              </Form>
+            </Content>
+          </LeftSlide>
+          <RightSlide active={activeSlide === 'login'}>
+            <BlurredBackground />
+            <Content>
+              <Form onSubmit={handleLoginSubmit}>
+                <Input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  value={loginData.username}
+                  onChange={handleLoginInputChange}
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={loginData.password}
+                  onChange={handleLoginInputChange}
+                />
+                <Button type="submit">Login</Button>
+                {feedback && <Feedback>{feedback}</Feedback>}
+              </Form>
+            </Content>
+          </RightSlide>
+          <CoverContainer active={activeSlide === 'register'}>
+            <MainText>{activeSlide === 'register' ? 'Login' : 'Register'} to start chatting on</MainText>
+            <MainText>Quote</MainText>
+            <SmallTextRight>Your all-in-one chatting platform</SmallTextRight>
+          </CoverContainer>
+          <LeftDoorButton onClick={toggleSlide}>Have an account?</LeftDoorButton>
+          <RightDoorButton onClick={toggleSlide}>Don't have an account?</RightDoorButton>
+        </Commode>
       </Container>
-      );
-      };
-      
-      export default App;
+    </AppContainer>
+  );
+};
+
+export default App;

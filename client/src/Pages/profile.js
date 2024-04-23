@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import bglog from './bglog.jpg';
+import Header from '../compoments/header'; // Adjust the path if necessary
 
-// Styled Components
-const PageContainer = styled.div`
-  background-image: url(${bglog});
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-`;
 
 const TerminalContainer = styled.div`
   width: 800px;
@@ -76,17 +67,15 @@ const AuthorInput = styled.input`
   margin-bottom: 0.5rem;
 `;
 
-// Terminal Component
 const Terminal = () => {
   const [command, setCommand] = useState('');
   const [author, setAuthor] = useState('');
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [user, setUser] = useState('');
-  const [isAuthorEntered, setIsAuthorEntered] = useState(false); // Add isAuthorEntered state
+  const [isAuthorEntered, setIsAuthorEntered] = useState(false);
 
   useEffect(() => {
-    // Fetch user info from cookies
     const loggedInUser = localStorage.getItem('username');
     if (loggedInUser) {
       setUser(loggedInUser);
@@ -124,7 +113,7 @@ const Terminal = () => {
         const response = await axios.post('http://localhost:5000/send-message', {
           message: command,
           author: author.trim(),
-          user: user.trim(), // Pass the logged-in user
+          user: user.trim(),
         });
         console.log(response.data.message);
         setCommand('');
@@ -137,35 +126,33 @@ const Terminal = () => {
   };
   
   return (
-    <PageContainer>
-      <TerminalContainer>
-        <TerminalHeader>
-          <Dot style={{ backgroundColor: '#66ff66', marginRight: '7px' }} />
-          <Dot style={{ backgroundColor: '#ffff66', marginRight: '7px' }} />
-          <Dot style={{ backgroundColor: '#ff6666', marginRight: '7px' }} />
-          <Title>Quote editor</Title>
-        </TerminalHeader>
-        {!isAuthorEntered ? (
-          <AuthorInput
-            type="text"
-            placeholder="Enter your name or handle"
-            value={author}
-            onChange={handleAuthorChange}
-            onKeyDown={handleAuthorKeyDown}
-          />
-        ) : (
-          <CommandField
-            rows={8}
-            value={command}
-            onChange={(e) => setCommand(e.target.value)}
-            onKeyDown={handleCommandKeyDown}
-            placeholder={statusMessage === 'Message sent!' ? 'Message sent!' : 'Write your quote here'}
-            disabled={loading}
-          />
-        )}
-        <p>{statusMessage}</p>
-      </TerminalContainer>
-    </PageContainer>
+    <TerminalContainer>
+      <TerminalHeader>
+        <Dot style={{ backgroundColor: '#ff6666', marginRight: '7px' }} />
+        <Dot style={{ backgroundColor: '#ffff66', marginRight: '7px' }} />
+        <Dot style={{ backgroundColor: '#66ff66', marginRight: '7px' }} />
+        <Title>Quote editor</Title>
+      </TerminalHeader>
+      {!isAuthorEntered ? (
+        <AuthorInput
+          type="text"
+          placeholder="Enter your name or handle"
+          value={author}
+          onChange={handleAuthorChange}
+          onKeyDown={handleAuthorKeyDown}
+        />
+      ) : (
+        <CommandField
+          rows={8}
+          value={command}
+          onChange={(e) => setCommand(e.target.value)}
+          onKeyDown={handleCommandKeyDown}
+          placeholder={statusMessage === 'Message sent!' ? 'Message sent!' : 'Write your quote here'}
+          disabled={loading}
+        />
+      )}
+      <p>{statusMessage}</p>
+    </TerminalContainer>
   );
 };
 
