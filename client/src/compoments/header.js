@@ -14,6 +14,7 @@ const HeaderContainer = styled.div`
 
 const LogoImage = styled.img`
   width: 50px;
+  cursor: pointer; /* Add cursor pointer to indicate it's clickable */
 `;
 
 const Title = styled.h1`
@@ -25,13 +26,17 @@ const Title = styled.h1`
 const Button = styled.button`
   text-decoration: none;
   padding: 10px 20px;
-  background-color: ${props => (props.primary ? '#007bff' : '#dc3545')};
-  color: #fff;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  background-color: white;
+  color: white;
+  border: 2px solid black;
+  cursor: pointer;
+  background-color: black;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 
   &:hover {
-    background-color: ${props => (props.primary ? '#0056b3' : '#c82333')};
+    border: 2px solid black;
+    color: black;
+    background-color: rgba(255, 255, 255, 0 );
   }
 `;
 
@@ -63,8 +68,14 @@ const Header = () => {
   return (
     <>
       <HeaderContainer>
-        <LogoImage src={Logo} alt="Logo" />
-        <Title>{isLoggedIn ? `Quote - ${loggedInUsername}` : 'Quote'}</Title>
+        {/* Wrap the LogoImage in Link component */}
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <LogoImage src={Logo} alt="Logo" />
+        </Link>
+        {/* Wrap the title in Link component */}
+        <Link to={`/${loggedInUsername}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Title>{isLoggedIn ? `Quote - ${loggedInUsername}` : 'Quote'}</Title>
+        </Link>
         {isLoggedIn ? (
           <Button onClick={handleLogout}>Logout</Button>
         ) : (

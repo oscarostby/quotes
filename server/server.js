@@ -68,20 +68,18 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Modify the message schema to include a 'user' field
 const messageSchema = new mongoose.Schema({
   message: { type: String, required: true },
   author: { type: String, required: true },
-  user: { type: String, required: true }, // Add this line
+  user: { type: String, required: true },
 });
 
 const Message = mongoose.model('Message', messageSchema);
 
-// Modify the '/send-message' endpoint to save the 'user'
 app.post('/send-message', async (req, res) => {
-  const { message, author, user } = req.body; // Add 'user' here
+  const { message, author, user } = req.body;
   try {
-    const newMessage = new Message({ message, author, user }); // And here
+    const newMessage = new Message({ message, author, user });
     await newMessage.save();
     console.log('Message successfully saved');
     res.status(200).json({ message: 'Message successfully sent' });
@@ -91,22 +89,6 @@ app.post('/send-message', async (req, res) => {
   }
 });
 
-
-// Add a new route to fetch quotes by username
-// Add a new route to fetch quotes by username
-app.get('/:username', async (req, res) => {
-  const { username } = req.params;
-  try {
-    const quotes = await Message.find({ user: username }).exec();
-    res.status(200).json({ quotes });
-  } catch (error) {
-    console.error('Error fetching quotes:', error);
-    res.status(500).json({ error: 'An error occurred while fetching quotes' });
-  }
-});
-
-
-// Modify the '/send-message' endpoint to fetch and log all messages
 app.get('/messages', async (req, res) => {
   try {
     const messages = await Message.find().exec();
@@ -121,19 +103,38 @@ app.get('/messages', async (req, res) => {
   }
 });
 
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.find().exec();
+    const populatedUsers = await Promise.all(users.map(async (user) => {
+      const userData = user.toObject();
+      const messages = await Message.find({ user: user.username }).exec();
+      userData.messages = messages;
+      return userData;
+    }));
+    res.status(200).json({ users: populatedUsers });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'An error occurred while fetching users' });
+  }
+});
+
+
+app.get('/messages', async (req, res) => {
+  try {
+    const { user } = req.query;
+    const query = user ? { user } : {}; // If user is provided in the query, filter by user
+    const messages = await Message.find(query).exec();
+    res.status(200).json({ messages });
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'An error occurred while fetching messages' });
+  }
+});
+
 
 
 
 app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
-  try {
-    const messages = await Message.find().exec();
-    console.log("All Messages:");
-    messages.forEach(message => {
-      console.log(`Message: ${message.message}, Author: ${message.author}, User: ${message.user}`);
-    });
-  } catch (error) {
-    console.error('Error fetching and logging messages:', error);
-  }
 });
-

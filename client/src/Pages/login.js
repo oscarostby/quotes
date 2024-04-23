@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import bgImage from './bglog.jpg';
 import bgslid from './bgslid.jpg';
-import Header from '../compoments/header'; // Adjust the path if necessary
+import Header from '../compoments/header';
 
 const slideAnimation = keyframes`
   from {
@@ -183,6 +183,20 @@ const AppContainer = styled.div`
   height: 100vh;
 `;
 
+const HomePage = ({ loggedInUsername }) => {
+  return (
+    <div>
+      <h1>LOADING PROFILE FOR , {loggedInUsername}!</h1>
+      {
+
+
+        true && (window.location.href = '/')
+      }
+    </div>
+  );
+};
+
+
 const App = () => {
   const [activeSlide, setActiveSlide] = useState('register');
   const [registerData, setRegisterData] = useState({ username: '', password: '', confirmPassword: '' });
@@ -190,6 +204,7 @@ const App = () => {
   const [feedback, setFeedback] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUsername, setLoggedInUsername] = useState('');
+  const [currentView, setCurrentView] = useState('login');
 
   useEffect(() => {
     const isLoggedInFromStorage = localStorage.getItem('isLoggedIn');
@@ -198,6 +213,7 @@ const App = () => {
     if (isLoggedInFromStorage === 'true' && usernameFromStorage) {
       setIsLoggedIn(true);
       setLoggedInUsername(usernameFromStorage);
+      setCurrentView('homepage');
       console.log(`User: ${usernameFromStorage}`);
     } else {
       console.log('User not logged in');
@@ -218,7 +234,7 @@ const App = () => {
         setLoggedInUsername(registerData.username);
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', registerData.username);
-        console.log(`User: ${registerData.username}`);
+        setCurrentView('homepage');
       } else {
         setFeedback('Unexpected response from server');
       }
@@ -241,98 +257,106 @@ const App = () => {
         setLoggedInUsername(loginData.username);
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', loginData.username);
-        console.log(`User: ${loginData.username}`);
-      } else {
+        setCurrentView('homepage');
+        } else {
         setFeedback('Unexpected response from server');
-      }
-    } catch (error){
-      if (error.response && error.response.data && error.response.data.error) {
+        }
+        } catch (error) {
+        if (error.response && error.response.data && error.response.data.error) {
         setFeedback(error.response.data.error);
-      } else {
+        } else {
         setFeedback('An error occurred while processing your request');
-      }
-    }
-  };
-
-  const handleRegisterInputChange = (e) => {
-    const { name, value } = e.target;
-    setRegisterData({ ...registerData, [name]: value });
-  };
-
-  const handleLoginInputChange = (e) => {
-    const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
-  };
-
-  return (
-    <AppContainer>
-      <Header />
-      <Container>
+        }
+        }
+        };
+        const handleRegisterInputChange = (e) => {
+        const { name, value } = e.target;
+        setRegisterData({ ...registerData, [name]: value });
+        };
+        const handleLoginInputChange = (e) => {
+        const { name, value } = e.target;
+        setLoginData({ ...loginData, [name]: value });
+        };
+        const renderView = () => {
+        switch (currentView) {
+        case 'login':
+        return (
+        <Container>
         <Commode>
-          <LeftSlide active={activeSlide === 'register'}>
-            <BlurredBackground />
-            <Content>
-              <Form onSubmit={handleRegisterSubmit}>
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  value={registerData.username}
-                  onChange={handleRegisterInputChange}
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={registerData.password}
-                  onChange={handleRegisterInputChange}
-                />
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  value={registerData.confirmPassword}
-                  onChange={handleRegisterInputChange}
-                />
-                <Button type="submit">Register</Button>
-                {feedback && <Feedback>{feedback}</Feedback>}
-              </Form>
-            </Content>
-          </LeftSlide>
-          <RightSlide active={activeSlide === 'login'}>
-            <BlurredBackground />
-            <Content>
-              <Form onSubmit={handleLoginSubmit}>
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  value={loginData.username}
-                  onChange={handleLoginInputChange}
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={loginData.password}
-                  onChange={handleLoginInputChange}
-                />
-                <Button type="submit">Login</Button>
-                {feedback && <Feedback>{feedback}</Feedback>}
-              </Form>
-            </Content>
-          </RightSlide>
-          <CoverContainer active={activeSlide === 'register'}>
-            <MainText>{activeSlide === 'register' ? 'Login' : 'Register'} to start chatting on</MainText>
-            <MainText>Quote</MainText>
-            <SmallTextRight>Your all-in-one chatting platform</SmallTextRight>
-          </CoverContainer>
-          <LeftDoorButton onClick={toggleSlide}>Have an account?</LeftDoorButton>
-          <RightDoorButton onClick={toggleSlide}>Don't have an account?</RightDoorButton>
+        <LeftSlide active={activeSlide === 'register'}>
+        <BlurredBackground />
+        <Content>
+        <Form onSubmit={handleRegisterSubmit}>
+        <Input
+                           type="text"
+                           name="username"
+                           placeholder="Username"
+                           value={registerData.username}
+                           onChange={handleRegisterInputChange}
+                         />
+        <Input
+                           type="password"
+                           name="password"
+                           placeholder="Password"
+                           value={registerData.password}
+                           onChange={handleRegisterInputChange}
+                         />
+        <Input
+                           type="password"
+                           name="confirmPassword"
+                           placeholder="Confirm Password"
+                           value={registerData.confirmPassword}
+                           onChange={handleRegisterInputChange}
+                         />
+        <Button type="submit">Register</Button>
+        {feedback && <Feedback>{feedback}</Feedback>}
+        </Form>
+        </Content>
+        </LeftSlide>
+        <RightSlide active={activeSlide === 'login'}>
+        <BlurredBackground />
+        <Content>
+        <Form onSubmit={handleLoginSubmit}>
+        <Input
+                           type="text"
+                           name="username"
+                           placeholder="Username"
+                           value={loginData.username}
+                           onChange={handleLoginInputChange}
+                         />
+        <Input
+                           type="password"
+                           name="password"
+                           placeholder="Password"
+                           value={loginData.password}
+                           onChange={handleLoginInputChange}
+                         />
+        <Button type="submit">Login</Button>
+        {feedback && <Feedback>{feedback}</Feedback>}
+        </Form>
+        </Content>
+        </RightSlide>
+        <CoverContainer active={activeSlide === 'register'}>
+        <MainText>{activeSlide === 'register' ? 'Login' : 'Register'} to start chatting on</MainText>
+        <MainText>Quote</MainText>
+        <SmallTextRight>Your all-in-one chatting platform</SmallTextRight>
+        </CoverContainer>
+        <LeftDoorButton onClick={toggleSlide}>Have an account?</LeftDoorButton>
+        <RightDoorButton onClick={toggleSlide}>Don't have an account?</RightDoorButton>
         </Commode>
-      </Container>
-    </AppContainer>
-  );
-};
-
-export default App;
+        </Container>
+        );
+        case 'homepage':
+        return <HomePage loggedInUsername={loggedInUsername} />;
+        default:
+        return null;
+        }
+        };
+        return (
+        <AppContainer>
+        <Header />
+        {renderView()}
+        </AppContainer>
+        );
+        };
+        export default App;
