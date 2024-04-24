@@ -1,38 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
-import Header from "../compoments/header"; // Corrected typo in "components"
+import { createGlobalStyle } from 'styled-components';
+import Header from "../compoments/header";
+import bgImage from "./bg2.png";
+import styled from 'styled-components'; // Import styled-components
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    background-image: url(${bgImage});
+    background-size: cover;
+    background-position: center;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+  }
+`;
+
+const QuoteBox = styled.div`
+  position: relative;
+  width: 60%;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  top: -20vh; /* Adjust this value to move the quote box further up */
+`;
+
+const QuoteContent = styled.p`
+  font-style: italic;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+const AuthorName = styled.p`
+  font-size: 1.2rem;
+  text-align: right;
+  font-weight: bold;
+  color: #555;
+`;
+
+const LeftBorder = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background-color: #333;
+`;
+
+const QuoteMark = styled.span`
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  font-size: 3rem;
+  color: #333;
+`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-`;
-
-const FancyBox = styled.div`
-  position: relative;
-  width: 700px;
-  height: 390px;
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 2px solid black;
-  clip-path: polygon(0 0, 91% 0, 100% 12%, 100% 100%, 12% 100%, 0 89%);
-`;
-
-const MessageContent = styled.p`
-  font-style: italic;
-  font-size: 1.2rem;
-  margin: 0;
-`;
-
-const AuthorName = styled.p`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  font-size: 0.8rem;
-  margin: 0;
+  min-height: 100vh;
 `;
 
 const App = () => {
@@ -54,13 +89,16 @@ const App = () => {
 
   return (
     <>
+      <GlobalStyle />
       <Header />
       <Container>
         {message && (
-          <FancyBox>
-            <MessageContent>{message.message}</MessageContent>
-            <AuthorName>Author: {message.author}</AuthorName>
-          </FancyBox>
+          <QuoteBox>
+            <LeftBorder />
+            <QuoteMark>“</QuoteMark>
+            <QuoteContent>{message.message}</QuoteContent>
+            <AuthorName>- {message.author}</AuthorName>
+          </QuoteBox>
         )}
       </Container>
     </>

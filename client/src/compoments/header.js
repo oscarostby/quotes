@@ -7,25 +7,31 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  border-bottom: 2px solid #ccc;
+  padding: 10px 20px; /* Adjusted padding */
   font-family: 'Arial', sans-serif;
+  height: 80px; /* Adjusted height */
 `;
 
 const LogoImage = styled.img`
-  width: 50px;
+  width: 150px; /* Reduced width */
   cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+`;
+
+const TitleWrapper = styled.div`
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
   margin: 0;
-  flex-grow: 1;
-  text-align: center; /* Center the text */
+  font-size: 20px; /* Adjusted font size */
 `;
 
 const Button = styled.button`
   text-decoration: none;
-  padding: 10px 20px;
+  padding: 8px 16px; /* Adjusted padding */
   background-color: white;
   color: white;
   border: 2px solid black;
@@ -72,10 +78,11 @@ const Header = () => {
         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <LogoImage src={Logo} alt="Logo" />
         </Link>
-        {/* Wrap the title in Link component */}
-        <Link to={`/${loggedInUsername}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Title>{isLoggedIn ? `Quote - ${loggedInUsername}` : 'Quote'}</Title>
-        </Link>
+        <TitleWrapper>
+          <Link to={`/${loggedInUsername}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Title>{isLoggedIn ? `Quote - ${loggedInUsername}` : 'Quote'}</Title>
+          </Link>
+        </TitleWrapper>
         {isLoggedIn ? (
           <Button onClick={handleLogout}>Logout</Button>
         ) : (

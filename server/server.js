@@ -119,7 +119,6 @@ app.get('/users', async (req, res) => {
   }
 });
 
-
 app.get('/messages', async (req, res) => {
   try {
     const { user } = req.query;
@@ -132,7 +131,32 @@ app.get('/messages', async (req, res) => {
   }
 });
 
+app.delete('/users/:username', async (req, res) => {
+  const { username } = req.params;
+  try {
+    await User.findOneAndDelete({ username });
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the user' });
+  }
+});
 
+app.put('/messages/:id', async (req, res) => {
+  const messageId = req.params.id;
+  const { message } = req.body;
+  try {
+    const updatedMessage = await Message.findByIdAndUpdate(messageId, { message }, { new: true });
+    if (!updatedMessage) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+    console.log('Message successfully updated:', updatedMessage);
+    res.status(200).json({ updatedMessage }); // Send back the updated message
+  } catch (error) {
+    console.error('Error updating message:', error);
+    res.status(500).json({ error: 'An error occurred while updating the message' });
+  }
+});
 
 
 app.listen(port, async () => {
