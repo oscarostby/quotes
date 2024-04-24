@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
-const axios = require('axios');
 const User = require('../models/user');
 
-exports.registerUser = async (req, res) => {
+async function registerUser(req, res) {
   const { username, password, confirmPassword } = req.body;
   if (!username || !password || !confirmPassword) {
     return res.status(400).json({ error: 'All fields are required' });
@@ -22,9 +21,9 @@ exports.registerUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while processing your request' });
   }
-};
+}
 
-exports.loginUser = async (req, res) => {
+async function loginUser(req, res) {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
@@ -39,4 +38,21 @@ exports.loginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while processing your request' });
   }
+}
+
+async function deleteUser(req, res) {
+  const { username } = req.params;
+  try {
+    await User.findOneAndDelete({ username });
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the user' });
+  }
+}
+
+module.exports = {
+  registerUser,
+  loginUser,
+  deleteUser
 };

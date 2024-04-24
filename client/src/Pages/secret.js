@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import axios from 'axios';
 
 function AdminPage() {
@@ -47,6 +47,7 @@ function AdminPage() {
       console.error('Error deleting message:', error);
     }
   };
+
 
   return (
     <div>

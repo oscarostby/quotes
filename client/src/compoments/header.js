@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Logo from './logo.png'; // Import the logo image
+import Logo from '../pictures/logo.png'; // Import the logo image
 
 const HeaderContainer = styled.div`
   display: flex;

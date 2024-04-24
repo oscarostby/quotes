@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Header from '../compoments/header'; // Corrected typo in import path
-import bg from './mnfj.webp';
+import bg from '../pictures/mnfj.webp';
 import Terminal from './profile';
 
 const Background = styled.div`
@@ -53,6 +53,13 @@ const EditButton = styled.button`
     opacity: 1; /* Show the button when hovering over PostBox */
   }
 `;
+
+const EditableAuthor = styled.input`
+  width: calc(100% - 40px);
+  font-size: 1rem;
+  margin-bottom: 10px;
+`;
+
 
 const UserQuotes = () => {
   const { username } = useParams();

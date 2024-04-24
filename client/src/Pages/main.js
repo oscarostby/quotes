@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createGlobalStyle } from 'styled-components';
 import Header from "../compoments/header";
-import bgImage from "./bg2.png";
+import bgImage from "../pictures/bg2.png";
 import styled from 'styled-components'; // Import styled-components
 
 const GlobalStyle = createGlobalStyle`

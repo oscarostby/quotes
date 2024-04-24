@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
-import bgImage from './bglog.jpg';
-import bgslid from './bgslid.jpg';
+import bgImage from '../pictures/bglog.jpg';
+import bgslid from '../pictures/bgslid.jpg';
 import Header from '../compoments/header';
 
 const slideAnimation = keyframes`
