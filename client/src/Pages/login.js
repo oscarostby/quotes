@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import axios from 'axios';
 import bgImage from '../pictures/bglog.jpg';
 import bgslid from '../pictures/bgslid.jpg';
 import Header from '../compoments/header';
 
-const slideAnimation = keyframes`
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(100% - 20px));
-  }
-`;
+
 
 const Container = styled.div`
   display: flex;
@@ -202,6 +195,7 @@ const App = () => {
   const [registerData, setRegisterData] = useState({ username: '', password: '', confirmPassword: '' });
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [feedback, setFeedback] = useState('');
+  // eslint-disable-next-line
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUsername, setLoggedInUsername] = useState('');
   const [currentView, setCurrentView] = useState('login');
@@ -227,7 +221,7 @@ const App = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/register', registerData);
+      const response = await axios.post('http://10.12.11.203:5000/register', registerData);
       if (response && response.data && response.data.message) {
         setFeedback(response.data.message);
         setIsLoggedIn(true);
@@ -250,7 +244,7 @@ const App = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', loginData);
+      const response = await axios.post('http://10.12.11.203:5000/login', loginData);
       if (response && response.data && response.data.message) {
         setFeedback(response.data.message);
         setIsLoggedIn(true);

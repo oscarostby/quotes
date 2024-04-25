@@ -76,7 +76,7 @@ const App = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/messages');
+        const response = await axios.get('http://10.12.11.203:5000/messages');
         const randomIndex = Math.floor(Math.random() * response.data.messages.length);
         setMessage(response.data.messages[randomIndex]);
       } catch (error) {

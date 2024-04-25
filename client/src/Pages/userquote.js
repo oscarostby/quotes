@@ -54,11 +54,6 @@ const EditButton = styled.button`
   }
 `;
 
-const EditableAuthor = styled.input`
-  width: calc(100% - 40px);
-  font-size: 1rem;
-  margin-bottom: 10px;
-`;
 
 
 const UserQuotes = () => {
@@ -70,7 +65,7 @@ const UserQuotes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/messages');
+        const response = await axios.get('http://10.12.11.203:5000/messages');
         const filteredPosts = response.data.messages.filter(post => post.user === username);
         setPosts(filteredPosts);
 

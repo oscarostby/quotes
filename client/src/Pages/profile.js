@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import Header from '../compoments/header'; // Adjust the path if necessary
 
 
 const TerminalContainer = styled.div`
@@ -110,7 +109,7 @@ const Terminal = () => {
       event.preventDefault();
       setLoading(true);
       try {
-        const response = await axios.post('http://localhost:5000/send-message', {
+        const response = await axios.post('http://10.12.11.203:5000/send-message', {
           message: command,
           author: author.trim(),
           user: user.trim(),
