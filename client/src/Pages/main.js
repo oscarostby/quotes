@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createGlobalStyle } from 'styled-components';
 import Header from "../compoments/header";
+import Button from "../compoments/button"; // Import the button component
 import bgImage from "../pictures/bg2.png";
 import styled from 'styled-components'; // Import styled-components
 
@@ -63,11 +64,18 @@ const QuoteMark = styled.span`
 `;
 
 const Container = styled.div`
+  position: relative; /* Make the container position relative */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+`;
+
+const BottomRightButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 `;
 
 const App = () => {
@@ -100,6 +108,9 @@ const App = () => {
             <AuthorName>- {message.author}</AuthorName>
           </QuoteBox>
         )}
+        <BottomRightButtonWrapper>
+          <Button to="/help">Help</Button>
+        </BottomRightButtonWrapper>
       </Container>
     </>
   );
