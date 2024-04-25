@@ -88,7 +88,7 @@ const UserQuotes = () => {
 
   const handleEdit = async (postId, newText) => {
     try {
-      const response = await axios.put(`http://localhost:5000/messages/${postId}`, { message: newText });
+      const response = await axios.put(`http://10.12.11.203:5000/messages/${postId}`, { message: newText });
       const updatedPost = response.data.updatedMessage;
       setPosts(prevPosts =>
         prevPosts.map(post => (post._id === updatedPost._id ? updatedPost : post))
