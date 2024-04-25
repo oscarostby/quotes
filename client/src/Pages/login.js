@@ -221,7 +221,7 @@ const App = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://10.12.11.203:5000/register', registerData);
+      const response = await axios.post('http://10.12.99.20:5000/register', registerData);
       if (response && response.data && response.data.message) {
         setFeedback(response.data.message);
         setIsLoggedIn(true);
@@ -244,7 +244,7 @@ const App = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://10.12.11.203:5000/login', loginData);
+      const response = await axios.post('http://10.12.99.20:5000/login', loginData);
       if (response && response.data && response.data.message) {
         setFeedback(response.data.message);
         setIsLoggedIn(true);

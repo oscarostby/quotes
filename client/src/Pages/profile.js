@@ -109,7 +109,7 @@ const Terminal = () => {
       event.preventDefault();
       setLoading(true);
       try {
-        const response = await axios.post('http://10.12.11.203:5000/send-message', {
+        const response = await axios.post('http://10.12.99.20:5000/send-message', {
           message: command,
           author: author.trim(),
           user: user.trim(),
